@@ -1,0 +1,109 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1.7cm]{geometry}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage[most]{tcolorbox}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{titling}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{accent}{HTML}{7C5CFC}
+\definecolor{accent2}{HTML}{38BDF8}
+\definecolor{muted}{HTML}{4B5563}
+\definecolor{partbg}{HTML}{EEF6FF}
+
+\newcommand{\dt}{\ensuremath{\delta t}}
+\newcommand{\mean}[1]{\ensuremath{\langle #1 \rangle}}
+
+\newtcolorbox{answerbox}{
+  enhanced, breakable,
+  colback=accent!5,
+  colframe=accent,
+  boxrule=0.6pt,
+  arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries,
+  title=Answer,
+  attach boxed title to top left={xshift=8pt, yshift=-3pt},
+  boxed title style={colback=accent, sharp corners, boxrule=0pt},
+  before skip=8pt, after skip=8pt
+}
+
+\newtcolorbox{questionbox}{
+  enhanced, breakable,
+  colback=partbg,
+  colframe=accent2,
+  boxrule=0.6pt,
+  arc=2pt,
+  left=9pt, right=9pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries\small,
+  title=Question,
+  attach boxed title to top left={xshift=8pt, yshift=-3pt},
+  boxed title style={colback=accent2, sharp corners, boxrule=0pt},
+  before skip=2pt, after skip=12pt
+}
+
+\newcommand{\question}[3]{%
+  \phantomsection
+  \addcontentsline{toc}{section}{Question #1\quad (#2)}%
+  \vspace{2pt}%
+  {\color{accent}\Large\bfseries Question #1}\hfill
+  {\color{muted}\small #2}\par
+  \vspace{2pt}%
+  {\color{accent}\hrule height 1.2pt}\vspace{8pt}%
+  \begin{questionbox}
+    #3
+  \end{questionbox}%
+}
+
+\newcommand{\partheading}[3]{%
+  \clearpage
+  \phantomsection
+  \addcontentsline{toc}{section}{Part #1\quad (#2)}%
+  \vspace{6pt}%
+  {\color{accent}\Large\bfseries Part #1}\par
+  \vspace{2pt}%
+  {\large #2}\par
+  \vspace{2pt}%
+  {\color{muted}\small #3}\par
+  \vspace{6pt}%
+  {\color{accent}\hrule height 1.2pt}\vspace{12pt}%
+}
+
+\newcommand{\Intro}[1]{%
+  \vspace{2pt}%
+  {\color{muted}\itshape #1\par}%
+  \vspace{8pt}%
+}
+
+\pagestyle{plain}
+\setcounter{secnumdepth}{0}
+\setlist[itemize]{leftmargin=1.2em, itemsep=3pt, topsep=3pt}
+\setlength{\parskip}{4pt}
+
+\captionsetup{font=small, labelfont={bf,color=muted},
+              labelsep=period, justification=raggedright, singlelinecheck=false}
+
+\floatplacement{figure}{H}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.7}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+
+\newtcolorbox{parambox}{
+  enhanced, breakable, colback=gray!6, colframe=muted,
+  boxrule=0.5pt, arc=1.5pt, left=8pt, right=8pt, top=5pt, bottom=5pt,
+  fonttitle=\bfseries\small, title=Given values,
+  attach boxed title to top left={xshift=7pt,yshift=-2pt},
+  boxed title style={colback=muted, sharp corners, boxrule=0pt},
+  before skip=6pt, after skip=8pt
+}

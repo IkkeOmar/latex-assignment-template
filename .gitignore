@@ -1,0 +1,13 @@
+# LaTeX build intermediates
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+
+# Compiled output (regenerate with `make`)
+/main.pdf
+
+__pycache__/
+.DS_Store
