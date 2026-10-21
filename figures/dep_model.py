@@ -65,10 +65,11 @@ def threshold_force(radius, delta_t):
 def clausius_mossotti(omega):
     """Complex Clausius-Mossotti factor of the particle in the medium.
 
-    Conduction is folded in through the complex permittivity, so the factor
-    depends on frequency. The real part sets the in-phase force, and a negative
-    value means negative dielectrophoresis, which pushes the particle towards
-    weaker fields.
+    Conduction is folded in via the complex permittivity eps* = eps - j sigma/omega.
+    The real part sets the in-phase force; a negative value means negative
+    dielectrophoresis. Textbook exact form per Dimaki & Svendsen lecture
+    notes Eq. 3.6 and Morgan & Green 2003 ("AC Electrokinetics: Colloids
+    and Nanoparticles", Research Studies Press).
     """
     particle_complex = PARTICLE_EPS_R * EPSILON_0 - 1j * PARTICLE_SIGMA / omega
     medium_complex = MEDIUM_EPS_R * EPSILON_0 - 1j * MEDIUM_SIGMA / omega
@@ -97,13 +98,16 @@ def equilibrium_height(radius, density, voltage, width, frequency):
     if k_cm >= 0.0 or net_weight <= 0.0:
         return float("nan")
 
-    force_needed = net_weight / (2.0 * pi * radius**3 * medium_eps_m() * abs(k_cm))
-    gradient_at_electrode = pi**3 * voltage**2 / (2.0 * width**3)
-
-    if gradient_at_electrode < force_needed:
+    # Force balance (assignment Q5 gradient, decay 3 pi^2 / d,
+    # prefactor 32 pi^2 V^2 / d^3) gives:
+    #   exp(-3 pi^2 y/d) = (rho_p - rho_m) g d^3
+    #                        / (48 pi^2 eps_m |Re K| V^2)
+    # (the alpha^3 between F_DEP and F_grav cancels in the prefactor).
+    rhs = ((density - MEDIUM_DENSITY) * GRAVITY * width**3
+           / (48.0 * pi**2 * medium_eps_m() * abs(k_cm) * voltage**2))
+    if rhs <= 0.0 or rhs >= 1.0:
         return float("nan")
-
-    return width / (2.0 * pi) * log(gradient_at_electrode / force_needed)
+    return -(width / (3.0 * pi**2)) * log(rhs)
 
 
 def gravity_minus_buoyancy(radius, particle_density):

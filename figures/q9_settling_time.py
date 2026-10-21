@@ -38,17 +38,17 @@ def travel_time(radius, density, target_height):
 
     drag = 6.0 * pi * D.VISCOSITY * radius
     force_at_electrode = (2.0 * pi * radius**3 * D.medium_eps_m() * abs(k_cm)
-                          * pi**3 * VOLTAGE**2 / (2.0 * WIDTH**3))
+                          * 32.0 * pi**2 * VOLTAGE**2 / WIDTH**3)
     net_weight = D.gravity_minus_buoyancy(radius, density)
 
     ratio = net_weight / force_at_electrode
 
     def phase(height):
         """Antiderivative of the equation of motion at a given height."""
-        u = exp(-2.0 * pi * height / WIDTH)
+        u = exp(-3.0 * pi**2 * height / WIDTH)
         return log(abs((u - ratio) / u))
 
-    return (-drag * WIDTH / (2.0 * pi * force_at_electrode * ratio)
+    return (-drag * WIDTH / (3.0 * pi**2 * force_at_electrode * ratio)
             * (phase(target_height) - phase(START_HEIGHT)))
 
 

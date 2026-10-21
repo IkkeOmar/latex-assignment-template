@@ -37,13 +37,13 @@ def height_at_time(radius, density, elapsed):
 
     drag = 6.0 * pi * D.VISCOSITY * radius
     force_at_electrode = (2.0 * pi * radius**3 * D.medium_eps_m() * abs(k_cm)
-                          * pi**3 * VOLTAGE**2 / (2.0 * WIDTH**3))
+                          * 32.0 * pi**2 * VOLTAGE**2 / WIDTH**3)
     net_weight = D.gravity_minus_buoyancy(radius, density)
 
     ratio = net_weight / force_at_electrode
-    factor = force_at_electrode * (2.0 * pi / WIDTH) / drag
+    factor = force_at_electrode * (3.0 * pi**2 / WIDTH) / drag
 
-    start = exp(-2.0 * pi * START_HEIGHT / WIDTH)
+    start = exp(-3.0 * pi**2 * START_HEIGHT / WIDTH)
     start_phase = log(abs((start - ratio) / start))
 
     # Past the settling time the particle simply sits at equilibrium.
@@ -52,7 +52,7 @@ def height_at_time(radius, density, elapsed):
 
     remaining = start_phase - factor * elapsed
     fraction = abs((ratio / exp(remaining)) - 1.0)
-    return -WIDTH / (2.0 * pi) * log(fraction)
+    return -(WIDTH / (3.0 * pi**2)) * (-log(fraction)
 
 
 def main():
